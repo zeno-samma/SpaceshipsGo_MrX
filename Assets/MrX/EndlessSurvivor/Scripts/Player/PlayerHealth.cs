@@ -25,6 +25,12 @@ namespace MrX.EndlessSurvivor
         // public float CurrentDamage => playerConfig.initialDamage + (playerConfig.damageBonusPerLevel * damageLevel);
         // public float CurrentCooldown => playerConfig.initialCooldown - (playerConfig.cooldownReductionPerLevel * cooldownLevel);
         // Hàm này sẽ được GameManager gọi khi load game xong
+
+        void Awake()
+        {
+            // Khởi tạo ReactiveProperty với giá trị ban đầu là maxHealth
+            CurrentHealth = new ReactiveProperty<float>(MaxHealth);
+        }
         public void ApplyLoadedData(PlayerData data)
         {
             healthLevel = data.healthUpgradeLevel;
