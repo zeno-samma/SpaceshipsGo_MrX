@@ -35,7 +35,7 @@ namespace MrX.EndlessSurvivor
         void Shoot()
         {
             // Đọc hướng trực tiếp, không cần tính toán lại
-            Vector3 shootDirection = playerAim.AimDirection;
+            // Vector3 shootDirection = playerAim.AimDirection;
             if (Input.GetMouseButtonDown(0) && currentAmo > 0 && Time.time > nextShot)
             {
                 // Khi game vừa bắt đầu, phát nhạc loading/menu
@@ -44,7 +44,7 @@ namespace MrX.EndlessSurvivor
                 GameObject bulletObj = PoolManager.Ins.GetFromPool("PlayerBullet", firePos.position);
                 Bullet bulletScript = bulletObj.GetComponent<Bullet>();
                 // 4. "Ra lệnh" cho viên đạn bay theo hướng đã tính
-                bulletScript.SetDirection(shootDirection);
+                // bulletScript.SetDirection(shootDirection);
                 currentAmo--;
             }
         }

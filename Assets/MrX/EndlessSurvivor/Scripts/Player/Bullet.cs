@@ -8,21 +8,21 @@ namespace MrX.EndlessSurvivor
         [SerializeField] private float moveSpeed = 1;//
         [SerializeField] private float desableDelay = 4f;
         private float timelast;
-        private Vector3 moveDirection;
+        // private Vector3 moveDirection;
 
         // Một hàm public để WeaponController có thể "ra lệnh"
-        public void SetDirection(Vector3 newDirection)
-        {
-            moveDirection = newDirection;
-            float angle = Mathf.Atan2(newDirection.y, newDirection.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle); // Giả sử sprite của bạn hướng lên
-        }
+        // public void SetDirection(Vector3 newDirection)
+        // {
+        //     moveDirection = newDirection;
+        //     float angle = Mathf.Atan2(newDirection.y, newDirection.x) * Mathf.Rad2Deg;
+        //     transform.rotation = Quaternion.Euler(0, 0, angle); // Giả sử sprite của bạn hướng lên
+        // }
 
         // Update is called once per frame
         void Update()
         {
             // Chỉ cần di chuyển theo hướng đã được thiết lập
-            transform.position += moveDirection * moveSpeed * Time.deltaTime;
+            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
             Desable();
         }
         void Desable()
