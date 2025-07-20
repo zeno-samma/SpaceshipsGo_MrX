@@ -1,13 +1,10 @@
 using UnityEngine;
 using System.IO;
+using System.Collections;
 using System;
-using Unity.Netcode;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 
 namespace MrX.EndlessSurvivor
 {
-
     public class GameManager : MonoBehaviour
     {
         public static GameManager Ins;
@@ -21,30 +18,40 @@ namespace MrX.EndlessSurvivor
             NONE, //Rỗng
             PREPAIR, //Đang chuẩn bị
             PLAYING,      // Đang chơi
+            COMBAT,         // << Trạng thái mới
             PAUSE,       // Dừng game
-            UPGRADEPHASE,//Nâng cấp.
+            // UPGRADEPHASE,//Nâng cấp.
             GAMEOVER  // Thua cuộc
         }
         public GameState CurrentState { get; private set; }
         private void OnEnable()
         {
             EventBus.Subscribe<PlayerSpawnedEvent>(OnPlayerSpawned);
+            EventBus.Subscribe<CombatFinishEvent>(CombatFinish);
             EventBus.Subscribe<PlayerDiedEvent>(GameOver);
         }
 
         private void OnDisable()
         {
             EventBus.Unsubscribe<PlayerSpawnedEvent>(OnPlayerSpawned);
+            EventBus.Unsubscribe<CombatFinishEvent>(CombatFinish);
             EventBus.Unsubscribe<PlayerDiedEvent>(GameOver);
         }
+
+        private void CombatFinish(CombatFinishEvent value)
+        {
+            Debug.Log("Combat xong chuyển trạng thái Traveling");
+            UpdateGameState(GameState.PLAYING);
+        }
+
         private void OnPlayerSpawned(PlayerSpawnedEvent value)
         {
             // Nhận Transform từ sự kiện và lưu lại
             this.playerHealth = value.HealthComponent;
-            Debug.Log("GameManager đã nhận được tham chiếu đến PlayerHealth thành công!");
+            // Debug.Log("GameManager đã nhận được tham chiếu đến PlayerHealth thành công!");
             if (playerHealth != null && loadedPlayerData != null)
             {
-                Debug.Log("Ok");
+                // Debug.Log("Ok");
                 this.playerHealth.ApplyLoadedData(loadedPlayerData);
             }
         }
@@ -79,7 +86,35 @@ namespace MrX.EndlessSurvivor
             // Bắt đầu game bằng trạng thái khởi tạo
             UpdateGameState(GameState.PREPAIR);
         }
+        public void PlayGame()///1.Sau khi ấn nút play
+        {
 
+            // Khi vào màn chơi, đổi sang nhạc gameplay
+            AudioManager.Instance.PlayMusic(AudioManager.Instance.gameplayMusic);
+            SceneLoader.Instance.LoadScene("Gameplay");
+            UpdateGameState(GameState.PLAYING);
+            StartNewCountdown(10);//Đếm ngược
+            // ActivePlayer();
+        }
+        private void StartNewCountdown(float duration)////duration thời gian cd mỗi wave enemy
+        {
+            StartCoroutine(CountdownCoroutine(duration));
+        }
+        private IEnumerator CountdownCoroutine(float duration)
+        {
+            float timer = duration;
+
+            // Bắt đầu vòng lặp đếm ngược
+            while (timer > 0)
+            {
+                // Giảm thời gian
+                Debug.Log($"Time: {timer}");
+                timer -= Time.deltaTime;
+                yield return null;
+            }
+            UpdateGameState(GameState.COMBAT);
+            yield break; // Kết thúc coroutine cho wave này
+        }
         public void UpdateGameState(GameState newState)
         {
             // Tránh gọi lại logic nếu không có gì thay đổi
@@ -97,21 +132,24 @@ namespace MrX.EndlessSurvivor
                 case GameState.PLAYING:
                     Time.timeScale = 1f;
                     break;
+                case GameState.COMBAT:
+                    Time.timeScale = 1f;
+                    break;
                 case GameState.PAUSE:
                     Time.timeScale = 0f;
                     break;
-                case GameState.UPGRADEPHASE:
-                    // EventBus.Publish(new StatPointEvent
-                    // {
-                    //     StatHealth = Player.Ins.maxHP, // maxHP của Player đã bao gồm Pref.Player_HP
-                    //     StatDamage = Player.Ins.valueAtk, // valueAtk của Player đã bao gồm Pref.Player_ATK
-                    //     StatCooldown = Player.Ins.m_Attack_CD,
-                    //     PointHealth = Pref.Player_Point_HP,
-                    //     PointDamage = Pref.Player_Point_ATK,
-                    //     PointCooldown = Pref.Player_Point_Cd,
-                    // });
-                    Time.timeScale = 0f; // Dừng game để người chơi nâng cấp
-                    break;
+                // case GameState.UPGRADEPHASE:
+                //     // EventBus.Publish(new StatPointEvent
+                //     // {
+                //     //     StatHealth = Player.Ins.maxHP, // maxHP của Player đã bao gồm Pref.Player_HP
+                //     //     StatDamage = Player.Ins.valueAtk, // valueAtk của Player đã bao gồm Pref.Player_ATK
+                //     //     StatCooldown = Player.Ins.m_Attack_CD,
+                //     //     PointHealth = Pref.Player_Point_HP,
+                //     //     PointDamage = Pref.Player_Point_ATK,
+                //     //     PointCooldown = Pref.Player_Point_Cd,
+                //     // });
+                //     Time.timeScale = 0f; // Dừng game để người chơi nâng cấp
+                //     break;
                 case GameState.GAMEOVER:
                     Time.timeScale = 0f; // Dừng game
                     break;
@@ -182,15 +220,7 @@ namespace MrX.EndlessSurvivor
             Debug.Log("Application quitting...");
             SaveGame(); // Gọi hàm save lần cuối
         }
-        public void PlayGame()///1.Sau khi ấn nút play
-        {
 
-            // Khi vào màn chơi, đổi sang nhạc gameplay
-            AudioManager.Instance.PlayMusic(AudioManager.Instance.gameplayMusic);
-            SceneLoader.Instance.LoadScene("Gameplay");
-            UpdateGameState(GameState.PLAYING);
-            // ActivePlayer();
-        }
         public void ActivePlayer()
         {
 

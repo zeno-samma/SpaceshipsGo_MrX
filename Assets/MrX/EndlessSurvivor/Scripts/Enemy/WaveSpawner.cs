@@ -6,6 +6,7 @@ namespace MrX.EndlessSurvivor
 {
     public class WaveSpawner : MonoBehaviour
     {
+        public static WaveSpawner Instance { get; private set; }
         [SerializeField] private Transform[] spawnPoints;
         [SerializeField] private int m_waveNumber = 0;
         [SerializeField] private int m_CD_Nextwave;
@@ -16,6 +17,17 @@ namespace MrX.EndlessSurvivor
             COUNTING_DOWN  // Trạng thái đang đếm ngược tới wave tiếp theo
         }
         public SpawnState m_state;
+        void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                Instance = this;
+            }
+        }
         private void OnEnable()
         {
 
@@ -30,7 +42,7 @@ namespace MrX.EndlessSurvivor
         void Start()
         {
             m_state = SpawnState.COUNTING_DOWN;
-            StartNextWave();
+            // StartNextWave();
         }
         void Update()
         {
@@ -55,7 +67,7 @@ namespace MrX.EndlessSurvivor
         }
         private void SpawnEnemiesState(StateUpdatedEvent Value)
         {
-            if (Value.CurState == GameManager.GameState.PLAYING)
+            if (Value.CurState == GameManager.GameState.COMBAT)
             {
                 Debug.Log("GameStart...!");
                 StartNextWave();
@@ -75,7 +87,8 @@ namespace MrX.EndlessSurvivor
             // Chuyển sang trạng thái đếm ngược cho wave tiếp theo
             m_state = SpawnState.COUNTING_DOWN;
             // Bắt đầu bộ đếm ngược (ví dụ, gọi hệ thống CountdownTimer đã thiết kế)
-            StartNewCountdown(m_CD_Nextwave);
+            EventBus.Publish(new CombatFinishEvent {});
+            // StartNewCountdown(m_CD_Nextwave);///
         }
         private void StartNewCountdown(float duration)////duration thời gian cd mỗi wave enemy
         {

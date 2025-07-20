@@ -6,6 +6,27 @@ namespace MrX.EndlessSurvivor
     {
         [SerializeField] private float scrollSpeed = 1f; // Tốc độ di chuyển của background
         private float backgroundWidth;
+        private void OnEnable()
+        {
+            // Đăng ký lắng nghe sự thay đổi trạng thái từ GameManager
+            EventBus.Subscribe<StateUpdatedEvent>(CombatState);//Lắng nghe trạng thái game do gamemanager quản lý
+        }
+
+        private void OnDisable()
+        {
+            EventBus.Unsubscribe<StateUpdatedEvent>(CombatState);
+        }
+        private void CombatState(StateUpdatedEvent Value)
+        {
+            if (Value.CurState == GameManager.GameState.COMBAT || Value.CurState == GameManager.GameState.GAMEOVER)
+            {
+                scrollSpeed = 0f;
+            }
+            else
+            {
+                scrollSpeed = 1f;
+            }
+        }
         void Start()
         {
             // Lấy chiều rộng của sprite

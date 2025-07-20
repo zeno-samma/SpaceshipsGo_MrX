@@ -263,38 +263,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
-    - target: {fileID: 2329967883318952042, guid: 740e0629432d74540986c9c80a8c7fdf, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2329967883318952042, guid: 740e0629432d74540986c9c80a8c7fdf, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2329967883318952042, guid: 740e0629432d74540986c9c80a8c7fdf, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2329967883318952042, guid: 740e0629432d74540986c9c80a8c7fdf, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2329967883318952042, guid: 740e0629432d74540986c9c80a8c7fdf, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 2329967883318952042, guid: 740e0629432d74540986c9c80a8c7fdf, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2329967883318952042, guid: 740e0629432d74540986c9c80a8c7fdf, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2329967883318952042, guid: 740e0629432d74540986c9c80a8c7fdf, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5757484984017866464, guid: 740e0629432d74540986c9c80a8c7fdf, type: 3}
       propertyPath: m_Name
       value: UICanvas

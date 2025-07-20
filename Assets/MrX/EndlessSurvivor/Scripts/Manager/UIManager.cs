@@ -48,10 +48,10 @@ namespace MrX.EndlessSurvivor
                 case GameManager.GameState.PAUSE:
                     // pauseMenuPanel.SetActive(true);
                     break;
-                case GameManager.GameState.UPGRADEPHASE:
-                    // gameplayHUD.SetActive(true);
-                    // upgradePanel.SetActive(true);
-                    break;
+                // case GameManager.GameState.UPGRADEPHASE:
+                //     // gameplayHUD.SetActive(true);
+                //     // upgradePanel.SetActive(true);
+                //     break;
                 case GameManager.GameState.GAMEOVER:
                     // Debug.Log("GAMEOVERUI");
                     // gameplayHUD.SetActive(true);

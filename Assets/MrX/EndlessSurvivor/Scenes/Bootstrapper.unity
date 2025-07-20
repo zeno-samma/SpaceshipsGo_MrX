@@ -919,6 +919,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentScore: 0
   playerHealth: {fileID: 0}
+  scrollingBackground: {fileID: 0}
+  waveSpawner: {fileID: 0}
+  autoAttackController: {fileID: 0}
 --- !u!114 &1662646245
 MonoBehaviour:
   m_ObjectHideFlags: 0
