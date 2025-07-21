@@ -29,14 +29,14 @@ namespace MrX.EndlessSurvivor
         // }
         void Update()
         {
-            Shoot();
+            // Shoot();
             Reload();
         }
-        void Shoot()
+        public void Shoot()
         {
             // Đọc hướng trực tiếp, không cần tính toán lại
             // Vector3 shootDirection = playerAim.AimDirection;
-            if (Input.GetMouseButtonDown(0) && currentAmo > 0 && Time.time > nextShot)
+            if (currentAmo > 0 && Time.time > nextShot)
             {
                 // Khi game vừa bắt đầu, phát nhạc loading/menu
                 AudioManager.Instance.PlaySFX(AudioManager.Instance.shootSFX);
